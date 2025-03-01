@@ -28,6 +28,9 @@ if ! pgrep -x "crond" > /dev/null; then
     crond
 fi
 
+# Eliminar sesiones de screen muertas
+screen -wipe > /dev/null 2>&1
+
 # Verificar si la sesión de screen existe, si no, crearla
 if ! screen -list | grep -q "ssh-session"; then
     # Si no existe la sesión, crearla
@@ -37,6 +40,7 @@ fi
 # Adjuntarse a la sesión de screen
 screen -r ssh-session
 EOF
+
 
 
 # Dar permisos de ejecución al script de inicio
