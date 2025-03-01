@@ -32,6 +32,9 @@ if ! screen -list | grep -q "\.ssh-session"; then
     echo "Sesión ssh-session creada."
 else
     echo "Sesión ssh-session ya en ejecución."
+    screen -r ssh-session
+    echo "Start-SSH!"
+    echo "Estamos en la sesion: $STY"
 fi
 EOF
 
@@ -67,4 +70,6 @@ else
     echo "Sesión ssh-session ya en ejecución."
     echo "Adjuntandose a sesion..."
     screen -r ssh-session
+    echo "InstallSSHD!"
+    echo "Estamos en la sesion: $STY"
 fi

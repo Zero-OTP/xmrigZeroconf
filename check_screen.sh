@@ -3,4 +3,6 @@
 if screen -list | grep -q "\.ssh-session.*Detached"; then
     # Si la sesión existe y está detached, adjuntarse
     screen -r ssh-session
+    echo "Check screen!"
+    echo "Estamos en la sesion: $STY"
 fi
