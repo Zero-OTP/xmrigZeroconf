@@ -5,7 +5,11 @@ echo "Actualizando paquetes e instalando..."
 pkg update && pkg upgrade -y
 pkg install openssh screen -y
 
-# Crear el script de auto-arranque con la nueva estructura
+#-- Auto-arranque
+
+#-- Asegurarse de que el directorio existe
+mkdir -p ~/.termux/boot/
+#-- Crear el script de auto-arranque
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock
