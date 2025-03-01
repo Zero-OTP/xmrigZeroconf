@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/sh
 
 #Actualizar y descargar
 echo -n "Actualizando paquetes y descargar repositorio..."
