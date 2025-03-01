@@ -1,27 +1,21 @@
 #!/data/data/com.termux/files/usr/bin/sh
 
-#-- Instalar y ejecurtar
+#-- Instalar y ejecutar
 echo "Actualizando paquetes e instalando..."
-pkg update && pkg upgrade
-pkg install openssh -y
-sshd
+pkg update && pkg upgrade -y
+pkg install openssh screen -y
 
-#-- Regenerar llaves manualmente....
-#mkdir -p ~/.ssh
-#ssh-keygen -A
-
-#-- Editar config si queremos que este cambiada....
-#nano $PREFIX/etc/ssh/sshd_config
-
-# Crear el script con la nueva estructura
+# Crear el script de auto-arranque con la nueva estructura
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock
 sshd
+# Iniciar o adjuntar a la sesión de screen
+screen -S ssh-session -d -m || screen -r ssh-session
 EOF
 
-#-- mostrar IP
-ifconfig
+# Dar permisos de ejecución al script de inicio
+chmod +x ~/.termux/boot/start-ssh
 
-#-- Para conectarse desde otro dispositivo ....
-#ssh -p 8022 usuario@IP_DEL_DISPOSITIVO
+# Iniciar SSH
+sshd
