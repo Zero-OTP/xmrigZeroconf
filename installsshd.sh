@@ -33,7 +33,7 @@ EOF
 
 # Dar permisos de ejecución al script de inicio
 chmod +x ~/.termux/boot/start-ssh
-
+chmod 755 ~/.termux/boot/start-ssh
 # Iniciar SSH
 sshd
 
@@ -54,3 +54,8 @@ crontab -l | grep -v "/data/data/com.termux/files/home/check_screen.sh" | { cat;
 
 # Iniciar cron de inmediato (esto ya está hecho en el script de arranque)
 crond
+
+# Agregar el script de inicio a ~/.bashrc si no está ya agregado
+if ! grep -q "bash ~/.termux/boot/start-ssh" ~/.bashrc; then
+    echo "bash ~/.termux/boot/start-ssh" >> ~/.bashrc
+fi
