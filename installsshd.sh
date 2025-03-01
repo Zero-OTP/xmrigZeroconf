@@ -65,4 +65,6 @@ if ! screen -list | grep -q "\.ssh-session"; then
     echo "Sesión ssh-session creada."
 else
     echo "Sesión ssh-session ya en ejecución."
+    echo "Adjuntandose a sesion..."
+    screen -r ssh-session
 fi
