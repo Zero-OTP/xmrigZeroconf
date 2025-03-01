@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/sh
-# Comprobar si la sesión de screen existe
-if screen -list | grep -q "\.ssh-session"; then
-    # Si la sesión existe, intentar adjuntarse
+# Comprobar si la sesión de screen existe pero está DETACHED
+if screen -list | grep -q "\.ssh-session.*Detached"; then
+    # Si la sesión existe y está detached, adjuntarse
     screen -r ssh-session
 fi
