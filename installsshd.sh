@@ -20,16 +20,24 @@ cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock
 sshd
-# Iniciar cron
-crond
+
+# Verificar si crond ya está corriendo antes de iniciarlo
+if ! pgrep -x "crond" > /dev/null; then
+    # Eliminar el archivo de PID si existe (previene errores)
+    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
+    crond
+fi
+
 # Verificar si la sesión de screen existe, si no, crearla
 if ! screen -list | grep -q "ssh-session"; then
     # Si no existe la sesión, crearla
     screen -S ssh-session -d -m
 fi
+
 # Adjuntarse a la sesión de screen
 screen -r ssh-session
 EOF
+
 
 # Dar permisos de ejecución al script de inicio
 chmod +x ~/.termux/boot/start-ssh
