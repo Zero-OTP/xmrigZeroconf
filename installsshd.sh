@@ -32,11 +32,6 @@ rm -rf ~/.screen/*
 if ! screen -list | grep -w "ssh-session" > /dev/null; then
     screen -S ssh-session -d -m
 fi
-
-# Iniciar el minero si no está corriendo
-if ! pgrep -x "xmrig-mine" > /dev/null; then
-    screen -S ssh-session -X stuff "./xmrig-mine\n"
-fi
 EOF
 
 # Dar permisos de ejecución al script de inicio
@@ -45,14 +40,6 @@ chmod 755 ~/.termux/boot/start-ssh
 
 # Iniciar SSH
 sshd
-
-# Eliminar sesiones de screen muertas
-rm -rf ~/.screen/*
-
-# Verificar si la sesión de screen existe antes de crearla
-if ! screen -list | grep -w "ssh-session" > /dev/null; then
-    screen -S ssh-session -d -m
-fi
 
 #-- Configuración de cron para verificar la sesión cada 15 minutos
 chmod +x ~/check_screen.sh
@@ -68,4 +55,15 @@ fi
 # Agregar el script de inicio a ~/.bashrc solo si no está ya agregado
 if ! grep -Fxq "bash ~/.termux/boot/start-ssh" ~/.bashrc; then
     echo "bash ~/.termux/boot/start-ssh" >> ~/.bashrc
+fi
+
+# Eliminar sesiones de screen muertas
+rm -rf ~/.screen/*
+
+# Verificar si la sesión de screen existe antes de crearla
+if ! screen -list | grep -w "ssh-session" > /dev/null; then
+    screen -S ssh-session -d -m
+    screen -r ssh-session
+else
+    echo "Sesión ssh-session ya en ejecución."
 fi
