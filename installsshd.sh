@@ -29,8 +29,10 @@ fi
 rm -rf ~/.screen/*
 
 # Verificar si la sesión de screen existe antes de crearla
-if ! screen -list | grep -w "ssh-session" > /dev/null; then
-    screen -S ssh-session -d -m
+if ! screen -list | grep -q "\.ssh-session"; then
+    screen -dmS ssh-session
+else
+    echo "Sesión ssh-session ya en ejecución."
 fi
 EOF
 
@@ -61,9 +63,8 @@ fi
 rm -rf ~/.screen/*
 
 # Verificar si la sesión de screen existe antes de crearla
-if ! screen -list | grep -w "ssh-session" > /dev/null; then
-    screen -S ssh-session -d -m
-    screen -r ssh-session
+if ! screen -list | grep -q "\.ssh-session"; then
+    screen -dmS ssh-session
 else
     echo "Sesión ssh-session ya en ejecución."
 fi
