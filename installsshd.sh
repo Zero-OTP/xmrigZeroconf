@@ -59,6 +59,7 @@ fi
 screen -x ssh-session
 
 #-- Configuración de cron para verificar la sesión cada 15 minutos
+chmod +x ~/check_screen.sh
 INTERVALO=2
 crontab -l | grep -v "/data/data/com.termux/files/home/check_screen.sh" | { cat; echo "*/$INTERVALO * * * * /data/data/com.termux/files/home/check_screen.sh"; } | crontab -
 
