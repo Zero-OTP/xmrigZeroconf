@@ -46,7 +46,7 @@ sshd
 #-- Configuración de cron para verificar la sesión cada 15 minutos
 chmod +x ~/check_screen.sh
 INTERVALO=2
-crontab -l | grep -v "/data/data/com.termux/files/home/check_screen.sh" | { cat; echo "*/$INTERVALO * * * * /data/data/com.termux/files/home/check_screen.sh"; } | crontab -
+crontab -l | grep -v "/data/data/com.termux/files/home/check_screen.sh" | { cat; echo "*/$INTERVALO * * * * ~/check_screen.sh"; } | crontab -
 
 # Iniciar cron de inmediato
 if ! pgrep -x "crond" > /dev/null; then
