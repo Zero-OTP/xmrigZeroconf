@@ -19,3 +19,5 @@ chmod +x ~/.termux/boot/start-ssh
 
 # Iniciar SSH
 sshd
+# Iniciar o adjuntar a la sesión de screen
+screen -S ssh-session -d -m || screen -r ssh-session
