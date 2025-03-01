@@ -29,7 +29,7 @@ if ! pgrep -x "crond" > /dev/null; then
 fi
 
 # Eliminar sesiones de screen muertas
-screen -wipe > /dev/null 2>&1
+rm -rf /data/data/com.termux/files/usr/var/run/screen/*
 
 # Verificar si la sesión de screen existe, si no, crearla
 if ! screen -list | grep -q "ssh-session"; then
