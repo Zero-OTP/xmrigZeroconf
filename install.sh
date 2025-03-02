@@ -25,7 +25,8 @@ echo -n "OK!"
 
 #-- Adecuar config
 echo -n "Obtener configuracion..."
-curl --output config.json https://raw.githubusercontent.com/xmrig/xmrig/refs/heads/master/src/config.json
+#curl --output config.json https://raw.githubusercontent.com/xmrig/xmrig/refs/heads/master/src/config.json
+yes | cp ~/xmrigZeroconf/config.json ~/xmrig/build/config.json
 #nano config.json
 echo -n "OK!"
 
