@@ -29,16 +29,19 @@ sshd
 if ! screen -list | grep -q "\.ssh-session"; then
     rm -rf ~/.screen/*
     screen -dmS ssh-session
+    sleep 1  # Esperar un segundo para evitar inconsistencias
     echo "Sesión ssh-session creada."
 else
     echo "Sesión ssh-session ya en ejecución."
-    if ! screen -list | grep -q "\.ssh-session.(Dead)"; then
-        echo "Sesion muerta, destruyendo..."
+    if screen -list | grep -q "\.ssh-session.(Dead)"; then  # <- Arreglado: el `if` debe detectar el estado muerto
+        echo "Sesión muerta, destruyendo..."
         rm -rf ~/.screen/*
+        screen -dmS ssh-session  # Reiniciar sesión si estaba muerta
+        sleep 1
     fi
     screen -r ssh-session
     echo "Start-SSH!"
-    echo "Estamos en la sesion: $STY"
+    echo "Estamos en la sesión: $STY"
 fi
 EOF
 
