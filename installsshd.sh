@@ -30,6 +30,7 @@ trap 'rm -f ~/.termux/boot/startup.lock' EXIT
 # Solo ejecuta esto si NO estamos dentro de una sesión de screen
 sleep 5
 if [ -z "$STY" ]; then  
+    termux-wake-lock
     sshd
 
     # Eliminar sesiones de screen muertas SOLO si no hay una activa
