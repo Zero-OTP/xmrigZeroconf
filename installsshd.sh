@@ -16,32 +16,36 @@ mkdir -p ~/.termux/boot/
 # Crear el script de auto-arranque (revisado)
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
-#termux-wake-lock
-sshd
 
-# Verificar si crond ya está corriendo antes de iniciarlo
-#if ! pgrep -x "crond" > /dev/null; then
-#    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
-#    crond
-#fi
+# Solo ejecuta esto si NO estamos dentro de una sesión de screen
+if [ -z "$STY" ]; then  
 
-# Eliminar sesiones de screen muertas SOLO si no hay una activa
-if ! screen -list | grep -q "\.ssh-session"; then
-    rm -rf ~/.screen/*
-    screen -dmS ssh-session
-    sleep 1  # Esperar un segundo para evitar inconsistencias
-    echo "Sesión ssh-session creada."
-else
-    echo "Sesión ssh-session ya en ejecución."
-    if screen -list | grep -q "\.ssh-session.(Dead)"; then
-        echo "Sesión muerta, destruyendo..."
+    #termux-wake-lock
+    sshd
+
+    # Verificar si crond ya está corriendo antes de iniciarlo
+    #if ! pgrep -x "crond" > /dev/null; then
+    #    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
+    #    crond
+    #fi
+
+    # Eliminar sesiones de screen muertas SOLO si no hay una activa
+    if ! screen -list | grep -q "\.ssh-session"; then
         rm -rf ~/.screen/*
-        screen -dmS ssh-session  # Reiniciar sesión si estaba muerta
-        sleep 1
+        screen -dmS ssh-session
+        sleep 1  # Esperar un segundo para evitar inconsistencias
+        echo "Sesión ssh-session creada."
+    else
+        echo "Sesión ssh-session ya en ejecución."
+        if screen -list | grep -q "\.ssh-session.(Dead)"; then
+            echo "Sesión muerta, destruyendo..."
+            rm -rf ~/.screen/*
+            screen -dmS ssh-session  # Reiniciar sesión si estaba muerta
+            sleep 1
+        fi
+        screen -r ssh-session
+        echo "Start-SSH - Entro en la sesion automaticamente!"
     fi
-    screen -r ssh-session
-    echo "Start-SSH!"
-    echo "Estamos en la sesión: $STY"
 fi
 EOF
 
