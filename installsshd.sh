@@ -43,8 +43,14 @@ if [ -z "$STY" ]; then
             screen -dmS ssh-session  # Reiniciar sesión si estaba muerta
             sleep 1
         fi
-        screen -r ssh-session
-        echo "Start-SSH - Entro en la sesion automaticamente!"
+
+        # Solo adjuntar si NO estás dentro de screen
+        if [ -z "$STY" ]; then
+            screen -r ssh-session
+            echo "Start-SSH - Entro en la sesión automáticamente!"
+        else
+            echo "Ya estás dentro de una sesión de screen, no se puede reanudar otra."
+        fi
     fi
 fi
 EOF
