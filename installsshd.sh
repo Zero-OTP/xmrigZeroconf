@@ -15,9 +15,9 @@ mkdir -p ~/.termux/boot/
 
 # Crear el script de auto-arranque (revisado)
 cat <<EOF > ~/.termux/boot/start-ssh
-#!/data/data/com.termux/files/usr/bin/sh
+!/data/data/com.termux/files/usr/bin/sh
 #termux-wake-lock
-#sshd
+sshd
 
 # Verificar si crond ya está corriendo antes de iniciarlo
 #if ! pgrep -x "crond" > /dev/null; then
@@ -26,16 +26,16 @@ cat <<EOF > ~/.termux/boot/start-ssh
 #fi
 
 # Eliminar sesiones de screen muertas SOLO si no hay una activa
-#if ! screen -list | grep -q "\.ssh-session"; then
-#    rm -rf ~/.screen/*
-#    screen -dmS ssh-session
-#    echo "Sesión ssh-session creada."
-#else
-#    echo "Sesión ssh-session ya en ejecución."
-#    screen -r ssh-session
-#    echo "Start-SSH!"
-#    echo "Estamos en la sesion: $STY"
-#fi
+if ! screen -list | grep -q "\.ssh-session"; then
+    rm -rf ~/.screen/*
+    screen -dmS ssh-session
+    echo "Sesión ssh-session creada."
+else
+    echo "Sesión ssh-session ya en ejecución."
+    screen -r ssh-session
+    echo "Start-SSH!"
+    echo "Estamos en la sesion: $STY"
+fi
 EOF
 
 # Dar permisos de ejecución al script de inicio
@@ -46,15 +46,15 @@ chmod 755 ~/.termux/boot/start-ssh
 sshd
 
 #-- Configuración de cron para verificar la sesión cada 2 minutos
-chmod +x ~/check_screen.sh
-INTERVALO=2
-crontab -l | grep -v "check_screen.sh" | { cat; echo "*/$INTERVALO * * * * ~/check_screen.sh"; } | crontab -
+#chmod +x ~/check_screen.sh
+#INTERVALO=2
+#crontab -l | grep -v "check_screen.sh" | { cat; echo "*/$INTERVALO * * * * ~/check_screen.sh"; } | crontab -
 
 # Iniciar cron de inmediato
-if ! pgrep -x "crond" > /dev/null; then
-    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
-    crond
-fi
+#if ! pgrep -x "crond" > /dev/null; then
+#    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
+#    crond
+#fi
 
 # Agregar el script de inicio a ~/.bashrc solo si no está ya agregado
 if ! grep -Fxq "bash ~/.termux/boot/start-ssh" ~/.bashrc; then
@@ -62,11 +62,7 @@ if ! grep -Fxq "bash ~/.termux/boot/start-ssh" ~/.bashrc; then
 fi
 
 # **Eliminar sesiones de screen solo si no hay ninguna activa**
-if ! screen -list | grep "ssh-session"; then
-    #rm -rf ~/.screen/*
-    screen -dmS ssh-session
-    echo "Sesión ssh-session creada."
-    echo "InstallSSHD! Sesion creada y adjuntada"
-    screen -r ssh-session
-    echo "Estamos en la sesion: $STY"
-fi
+rm -rf ~/.screen/*
+screen -dmS ssh-session
+echo "Sesión ssh-session creada."
+screen -r ssh-session
