@@ -17,13 +17,15 @@ mkdir -p ~/.termux/boot/
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 
-LOCKFILE=~/.termux/boot/startup.lock
-if [ -e "$LOCKFILE" ]; then
+if [ -e ~/.termux/boot/startup.lock ]; then
     echo "El script ya se está ejecutando. Saliendo..."
     exit 1
 fi
-touch "$LOCKFILE"
-trap 'rm -f "$LOCKFILE"' EXIT  # Elimina el lock al salir
+
+touch ~/.termux/boot/startup.lock
+# Elimina el lock al salir
+trap 'rm -f ~/.termux/boot/startup.lock' EXIT
+
 
 # Solo ejecuta esto si NO estamos dentro de una sesión de screen
 sleep 5
