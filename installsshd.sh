@@ -33,7 +33,7 @@ if ! screen -list | grep -q "\.ssh-session"; then
     echo "Sesión ssh-session creada."
 else
     echo "Sesión ssh-session ya en ejecución."
-    if screen -list | grep -q "\.ssh-session.(Dead)"; then  # <- Arreglado: el `if` debe detectar el estado muerto
+    if screen -list | grep -q "\.ssh-session.(Dead)"; then
         echo "Sesión muerta, destruyendo..."
         rm -rf ~/.screen/*
         screen -dmS ssh-session  # Reiniciar sesión si estaba muerta
