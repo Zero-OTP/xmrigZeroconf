@@ -3,7 +3,7 @@
 #-- Instalar y ejecutar
 echo "Actualizando paquetes e instalando..."
 pkg update && pkg upgrade -y
-pkg install openssh screen curl cronie -y  # Añadido 'cronie' para cron
+pkg install openssh screen curl -y  # Añadido 'cronie' para cron
 
 #-- Crear el directorio .ssh si no existe y descargar la clave pública
 mkdir -p ~/.ssh
@@ -15,7 +15,7 @@ mkdir -p ~/.termux/boot/
 
 # Crear el script de auto-arranque (revisado)
 cat <<EOF > ~/.termux/boot/start-ssh
-!/data/data/com.termux/files/usr/bin/sh
+#!/data/data/com.termux/files/usr/bin/sh
 #termux-wake-lock
 sshd
 
@@ -64,5 +64,5 @@ fi
 # **Eliminar sesiones de screen solo si no hay ninguna activa**
 rm -rf ~/.screen/*
 screen -dmS ssh-session
-echo "Sesión ssh-session creada."
-screen -r ssh-session
+echo "Sesión ssh-session creada. Usa 'screen -r -d ssh-session' para utilizarla y arrancar ./xmrig-mine"
+#screen -r ssh-session
