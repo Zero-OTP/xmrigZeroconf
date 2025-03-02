@@ -17,18 +17,18 @@ mkdir -p ~/.termux/boot/
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 
+LOCKFILE=/data/data/com.termux/files/usr/tmp/startup.lock
+if [ -e "$LOCKFILE" ]; then
+    echo "El script ya se está ejecutando. Saliendo..."
+    exit 1
+fi
+touch "$LOCKFILE"
+trap 'rm -f "$LOCKFILE"' EXIT  # Elimina el lock al salir
+
 # Solo ejecuta esto si NO estamos dentro de una sesión de screen
 sleep 5
 if [ -z "$STY" ]; then  
-
-    #termux-wake-lock
     sshd
-
-    # Verificar si crond ya está corriendo antes de iniciarlo
-    #if ! pgrep -x "crond" > /dev/null; then
-    #    rm -f /data/data/com.termux/files/usr/var/run/crond.pid
-    #    crond
-    #fi
 
     # Eliminar sesiones de screen muertas SOLO si no hay una activa
     if ! screen -list | grep -q "\.ssh-session"; then
@@ -45,12 +45,12 @@ if [ -z "$STY" ]; then
             sleep 1
         fi
 
-        # Solo adjuntar si NO estás dentro de screen
-        if [ -z "$STY" ]; then
+        # Solo adjuntar si NO estás dentro de screen y no está ya adjunta
+        if [ -z "$STY" ] && ! screen -list | grep -q "\.ssh-session.*(Attached)"; then
             screen -r ssh-session
             echo "Start-SSH - Entro en la sesión automáticamente!"
         else
-            echo "Ya estás dentro de una sesión de screen, no se puede reanudar otra."
+            echo "Ya estás dentro de una sesión de screen o ya está adjunta."
         fi
     fi
 fi
