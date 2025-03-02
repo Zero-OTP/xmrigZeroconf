@@ -17,7 +17,7 @@ mkdir -p ~/.termux/boot/
 cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 
-LOCKFILE=/data/data/com.termux/files/usr/tmp/startup.lock
+LOCKFILE=~/.termux/boot/startup.lock
 if [ -e "$LOCKFILE" ]; then
     echo "El script ya se está ejecutando. Saliendo..."
     exit 1
