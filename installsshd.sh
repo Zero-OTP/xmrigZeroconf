@@ -62,11 +62,11 @@ if ! grep -Fxq "bash ~/.termux/boot/start-ssh" ~/.bashrc; then
 fi
 
 # **Eliminar sesiones de screen solo si no hay ninguna activa**
-if ! screen -list | grep -q "\.ssh-session"; then
-    rm -rf ~/.screen/*
+if ! screen -list | grep "ssh-session"; then
+    #rm -rf ~/.screen/*
     screen -dmS ssh-session
-    screen -r ssh-session
     echo "Sesión ssh-session creada."
     echo "InstallSSHD! Sesion creada y adjuntada"
+    screen -r ssh-session
     echo "Estamos en la sesion: $STY"
 fi
