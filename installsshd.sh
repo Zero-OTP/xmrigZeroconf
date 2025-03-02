@@ -18,6 +18,7 @@ cat <<EOF > ~/.termux/boot/start-ssh
 #!/data/data/com.termux/files/usr/bin/sh
 
 # Solo ejecuta esto si NO estamos dentro de una sesión de screen
+sleep 5
 if [ -z "$STY" ]; then  
 
     #termux-wake-lock
