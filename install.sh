@@ -32,7 +32,7 @@ echo -n "OK!"
 
 #-- Crear Symlink
 echo -n "Crear Symlink en home..."
-ln -s ~/xmrig/build/xmrig xmrig-mine
+ln -s ~/xmrig/build/xmrig ~/xmrig-mine
 echo -n "OK!"
 
 #-- Informacion ejecutar
