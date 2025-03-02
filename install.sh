@@ -3,13 +3,15 @@
 #Actualizar y descargar
 echo -n "Actualizando paquetes y descargar repositorio..."
 pkg upgrade
-​pkg install git build-essential cmake openssh -y
+dpkg --configure -a
+​pkg install git build-essential openssh -y
+pkg install cmake -y
 git clone https://github.com/xmrig/xmrig.git
 echo -n "OK!"
 
 #-- Reemplazar Fee al 0
 echo -n "Ajustando donaciones a 0..."
-mv donate.h ~/xmrig/src/donate.h
+cp donate.h ~/xmrig/src/donate.h
 echo -n "OK!"
 
 #-- Compilar
