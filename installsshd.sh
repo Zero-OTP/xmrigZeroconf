@@ -32,6 +32,10 @@ if ! screen -list | grep -q "\.ssh-session"; then
     echo "Sesión ssh-session creada."
 else
     echo "Sesión ssh-session ya en ejecución."
+    if ! screen -list | grep -q "\.ssh-session.(Dead)"; then
+        echo "Sesion muerta, destruyendo..."
+        rm -rf ~/.screen/*
+    fi
     screen -r ssh-session
     echo "Start-SSH!"
     echo "Estamos en la sesion: $STY"
